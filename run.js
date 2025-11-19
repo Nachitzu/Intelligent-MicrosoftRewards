@@ -7,7 +7,7 @@
         storageKey: 'bing_rewards_v4_ultimate' // Nueva llave para nueva versión
     };
 
-    console.log("--- 🧠 Iniciando Sistema: Gaming, Fitness & Steam Edition ---");
+    console.log("--- Iniciando Sistema: Gaming, Fitness & Steam Edition ---");
 
     // --- GESTOR DE MEMORIA (Persistencia Local) ---
     const Memory = {
@@ -28,7 +28,7 @@
                 }
             }
             Memory.save(data);
-            if(cleaned > 0) console.log(`🧹 Limpieza: ${cleaned} registros antiguos borrados.`);
+            if(cleaned > 0) console.log(`Limpieza: ${cleaned} registros antiguos borrados.`);
         },
         isRemembered: (term) => Memory.get().history.hasOwnProperty(term),
         add: (term) => {
@@ -138,7 +138,7 @@
         const searchTerm = Generator.getUniqueQuery();
         Memory.add(searchTerm);
 
-        console.log(`[${currentCount}/${CONFIG.totalSearches}] 🎮 Buscando: "${searchTerm}"`);
+        console.log(`[${currentCount}/${CONFIG.totalSearches}] Buscando: "${searchTerm}"`);
 
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}&form=QBLH`;
         const win = window.open(searchUrl, "_blank");
