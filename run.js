@@ -1,51 +1,36 @@
 (function() {
     // --- CONFIGURACIÓN ---
     const CONFIG = {
-        totalSearches: 33,
-        duration: 5000, // 5 segundos
-        daysToRemember: 5,
-        storageKey: 'bing_rewards_ai_memory'
+        totalSearches: 33, // Número de búsquedas
+        duration: 6000,    // Base de 6 segundos de espera
+        daysToRemember: 5, // No repetir palabras en 5 días
+        storageKey: 'bing_rewards_v4_ultimate' // Nueva llave para nueva versión
     };
 
-    // --- DICCIONARIO BASE (SEMILLA) ---
-    // El script usará esto para "aprender" combinaciones
-    const seedDictionary = {
-        topics: ["clima", "noticias", "receta", "definicion", "precio", "historia", "mapa", "tutorial", "comprar", "mejor", "juegos"],
-        subjects: ["python", "react", "dolar", "euro", "criptomonedas", "tesla", "marte", "inteligencia artificial", "messi", "chile", "viaje", "cafe", "shooter", "extraction"],
-        modifiers: ["2024", "hoy", "wikipedia", "pdf", "resumen", "video", "online", "barato", "urgente", "gratis", "oferta", "descuento"]
-    };
+    console.log("--- 🧠 Iniciando Sistema: Gaming, Fitness & Steam Edition ---");
 
-    console.log("--- 🧠 Iniciando Sistema de Búsqueda Inteligente ---");
-
-    // --- GESTOR DE MEMORIA (LOCALSTORAGE) ---
+    // --- GESTOR DE MEMORIA (Persistencia Local) ---
     const Memory = {
         get: () => {
             const data = localStorage.getItem(CONFIG.storageKey);
             return data ? JSON.parse(data) : { history: {} };
         },
-        save: (data) => {
-            localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
-        },
+        save: (data) => localStorage.setItem(CONFIG.storageKey, JSON.stringify(data)),
         cleanOldEntries: () => {
             const data = Memory.get();
             const now = Date.now();
             const retentionMs = CONFIG.daysToRemember * 24 * 60 * 60 * 1000;
-            
-            let cleanedCount = 0;
+            let cleaned = 0;
             for (const term in data.history) {
                 if (now - data.history[term] > retentionMs) {
                     delete data.history[term];
-                    cleanedCount++;
+                    cleaned++;
                 }
             }
             Memory.save(data);
-            if(cleanedCount > 0) console.log(`🧹 Memoria limpia: Se olvidaron ${cleanedCount} términos antiguos.`);
+            if(cleaned > 0) console.log(`🧹 Limpieza: ${cleaned} registros antiguos borrados.`);
         },
-        isRemembered: (term) => {
-            const data = Memory.get();
-            // Retorna true si existe y es reciente (la limpieza ya se encarga de lo viejo, pero doble check)
-            return data.history.hasOwnProperty(term);
-        },
+        isRemembered: (term) => Memory.get().history.hasOwnProperty(term),
         add: (term) => {
             const data = Memory.get();
             data.history[term] = Date.now();
@@ -53,84 +38,123 @@
         }
     };
 
-    // --- MOTOR GENERATIVO (SIMULACIÓN ML) ---
+    // --- CEREBRO DE PLANTILLAS (BLUEPRINTS) ---
+    const Blueprints = {
+        // --- NUEVA SECCIÓN: GAMING GENERAL ---
+        gaming_general: {
+            items: ["GTA VI", "PlayStation 5 Pro", "Nintendo Switch 2", "Xbox Game Pass", "Elden Ring DLC", "Call of Duty Black Ops 6", "The Witcher 4"],
+            modifiers: ["fecha de lanzamiento", "rumores filtrados", "análisis técnico df", "gameplay 4k", "comparativa gráficos", "mejores accesorios", "guía de trofeos"],
+            templates: [
+                "Noticias {item} {modifier}",
+                "¿Vale la pena {item}?",
+                "Fecha salida {item} {modifier}",
+                "Ver trailer {item} {modifier}"
+            ]
+        },
+        // --- NUEVA SECCIÓN: FITNESS ---
+        fitness_gym: {
+            items: ["Creatina monohidratada", "Proteína Whey", "Rutina Full Body", "Calistenia", "Ayuno intermitente", "Zapatillas running", "Reloj Garmin", "Mancuernas ajustables"],
+            modifiers: ["beneficios y contraindicaciones", "para principiantes", "en casa sin equipo", "mejores marcas 2025", "cómo tomar correctamente", "para ganar masa muscular", "para perder grasa"],
+            templates: [
+                "Mejor {item} {modifier}",
+                "Guía de {item} {modifier}",
+                "Errores al hacer {item}",
+                "Rutina de {item} pdf"
+            ]
+        },
+        // --- NUEVA SECCIÓN: STEAM & OFERTAS ---
+        steam_pc: {
+            items: ["Steam Deck OLED", "Steam Summer Sale", "Counter Strike 2", "Baldur's Gate 3", "Juegos Indie", "Tarjetas gráficas NVIDIA", "SteamDB"],
+            modifiers: ["ofertas históricas", "juegos por menos de 5 dolares", "requisitos mínimos pc", "mejores mods", "skins baratas", "reembolso política", "fps boost guia"],
+            templates: [
+                "Comprar {item} {modifier}",
+                "Cuándo empieza {item}",
+                "Top valorados {item} {modifier}",
+                "{item} precio chile"
+            ]
+        },
+        // --- SECCIONES ANTERIORES (Mantenidas para variedad) ---
+        cocktails: {
+            items: ["Mojito", "Pisco Sour", "Ramazzotti", "Gin Tonic", "Vino Navegado", "Michelada"],
+            modifiers: ["receta casera", "ingredientes", "preparación fácil", "con maracuyá", "medidas exactas"],
+            templates: ["Cómo preparar {item} {modifier}", "Receta de {item} {modifier}"]
+        },
+        tech_dev: {
+            items: ["Python", "React Native", "Docker", "Linux", "Git", "SQL"],
+            modifiers: ["tutorial pdf", "curso gratis", "documentación", "entrevista preguntas", "roadmap 2025"],
+            templates: ["Aprender {item} {modifier}", "Solucionar error {item}"]
+        },
+        finance: {
+            items: ["Bitcoin", "Dolar observado", "UF hoy", "Acciones Tesla", "Ethereum"],
+            modifiers: ["precio hoy", "predicción", "noticias", "gráfico tiempo real"],
+            templates: ["{item} {modifier}", "Valor {item} a pesos"]
+        }
+    };
+
+    // --- MOTOR GENERADOR ---
     const Generator = {
-        // Genera una búsqueda nueva combinando vectores de palabras
-        createNovelQuery: () => {
-            const t = seedDictionary.topics;
-            const s = seedDictionary.subjects;
-            const m = seedDictionary.modifiers;
-            
-            // Selecciona aleatoriamente partes del discurso
-            const p1 = t[Math.floor(Math.random() * t.length)];
-            const p2 = s[Math.floor(Math.random() * s.length)];
-            const p3 = Math.random() > 0.5 ? m[Math.floor(Math.random() * m.length)] : "";
-            
-            return `${p1} ${p2} ${p3}`.trim();
+        buildQuery: () => {
+            // 1. Seleccionar categoría
+            const categories = Object.keys(Blueprints);
+            const catKey = categories[Math.floor(Math.random() * categories.length)];
+            const schema = Blueprints[catKey];
+
+            // 2. Seleccionar datos
+            const template = schema.templates[Math.floor(Math.random() * schema.templates.length)];
+            const item = schema.items[Math.floor(Math.random() * schema.items.length)];
+            const modifier = schema.modifiers[Math.floor(Math.random() * schema.modifiers.length)];
+
+            // 3. Construir frase
+            let query = template.replace("{item}", item).replace("{modifier}", modifier);
+            return query.replace("{modifier}", "").trim(); 
         },
 
-        // Intenta generar una palabra única que no esté en memoria
         getUniqueQuery: () => {
             let attempt = 0;
             let query = "";
-            const maxAttempts = 50;
-
             do {
-                query = Generator.createNovelQuery();
+                query = Generator.buildQuery();
                 attempt++;
-            } while (Memory.isRemembered(query) && attempt < maxAttempts);
+            } while (Memory.isRemembered(query) && attempt < 50);
 
-            if (attempt >= maxAttempts) {
-                // Fallback: Si se agotan las combinaciones lógicas, usa entropía pura
-                return query + " " + Math.floor(Math.random() * 1000);
-            }
+            if (attempt >= 50) return query + " " + Math.floor(Math.random() * 9999);
             return query;
         }
     };
 
-    // --- LÓGICA DE CONTROL ---
+    // --- EJECUCIÓN ---
     let currentCount = 0;
 
     function performSearch() {
-        // 1. Mantenimiento de memoria
         if (currentCount === 0) Memory.cleanOldEntries();
 
-        // 2. Condición de parada
         if (currentCount >= CONFIG.totalSearches) {
-            console.log("✅ Meta alcanzada: 33 búsquedas inteligentes completadas.");
-            alert("Proceso finalizado. Puntos generados.");
+            console.log("✅ Misión cumplida: 33 búsquedas realizadas.");
+            alert("Script finalizado. Puntos obtenidos.");
             return;
         }
 
         currentCount++;
-
-        // 3. Generar término único (ML Logic)
         const searchTerm = Generator.getUniqueQuery();
-        
-        // 4. Guardar en memoria para no repetir en 5 días
         Memory.add(searchTerm);
 
-        console.log(`[${currentCount}/${CONFIG.totalSearches}] 🔍 Buscando: "${searchTerm}" (No se repetirá hasta dentro de 5 días)`);
+        console.log(`[${currentCount}/${CONFIG.totalSearches}] 🎮 Buscando: "${searchTerm}"`);
 
-        // 5. Ejecutar búsqueda
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}&form=QBLH`;
-        
-        // Abrir pestaña
         const win = window.open(searchUrl, "_blank");
 
-        // 6. Cerrar y continuar
+        // Tiempo aleatorio entre 6 y 10 segundos para máxima seguridad
+        const randomDuration = CONFIG.duration + Math.floor(Math.random() * 4000);
+
         setTimeout(() => {
             if (win) {
                 win.close();
-                // Pequeña variación aleatoria en el tiempo (humanización)
-                const randomDelay = Math.floor(Math.random() * 1000) + 500;
-                setTimeout(performSearch, randomDelay);
+                setTimeout(performSearch, 1000);
             } else {
-                console.error("❌ Error: Pop-up bloqueado. Habilita las ventanas emergentes.");
+                console.error("❌ Error: Habilita las ventanas emergentes (Pop-ups).");
             }
-        }, CONFIG.duration);
+        }, randomDuration);
     }
 
-    // Iniciar
     performSearch();
 })();
