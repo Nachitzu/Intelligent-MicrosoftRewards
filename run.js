@@ -10,9 +10,9 @@
     // --- DICCIONARIO BASE (SEMILLA) ---
     // El script usará esto para "aprender" combinaciones
     const seedDictionary = {
-        topics: ["clima", "noticias", "receta", "definicion", "precio", "historia", "mapa", "tutorial", "comprar", "mejor"],
-        subjects: ["python", "react", "dolar", "euro", "criptomonedas", "tesla", "marte", "inteligencia artificial", "messi", "chile", "viaje", "cafe"],
-        modifiers: ["2024", "hoy", "wikipedia", "pdf", "resumen", "video", "online", "barato", "urgente", "gratis"]
+        topics: ["clima", "noticias", "receta", "definicion", "precio", "historia", "mapa", "tutorial", "comprar", "mejor", "juegos"],
+        subjects: ["python", "react", "dolar", "euro", "criptomonedas", "tesla", "marte", "inteligencia artificial", "messi", "chile", "viaje", "cafe", "shooter", "extraction"],
+        modifiers: ["2024", "hoy", "wikipedia", "pdf", "resumen", "video", "online", "barato", "urgente", "gratis", "oferta", "descuento"]
     };
 
     console.log("--- 🧠 Iniciando Sistema de Búsqueda Inteligente ---");
