@@ -40,54 +40,108 @@
 
     // --- CEREBRO DE PLANTILLAS (BLUEPRINTS) ---
     const Blueprints = {
-        // --- NUEVA SECCIÓN: GAMING GENERAL ---
+        // --- GAMING (Expandido) ---
         gaming_general: {
-            items: ["GTA VI", "PlayStation 5 Pro", "Nintendo Switch 2", "Xbox Game Pass", "Elden Ring DLC", "Call of Duty Black Ops 6", "The Witcher 4"],
-            modifiers: ["fecha de lanzamiento", "rumores filtrados", "análisis técnico df", "gameplay 4k", "comparativa gráficos", "mejores accesorios", "guía de trofeos"],
+            items: ["GTA VI", "PlayStation 5 Pro", "Nintendo Switch 2", "Xbox Game Pass", "Elden Ring DLC", "Call of Duty Black Ops 6", "The Witcher 4", "Hollow Knight Silksong", "Metroid Prime 4", "FIFA 25", "Minecraft updates", "Roblox"],
+            modifiers: ["fecha de lanzamiento", "rumores filtrados", "análisis técnico df", "gameplay 4k", "comparativa gráficos", "mejores accesorios", "guía de trofeos", "requisitos pc", "bugs y errores"],
             templates: [
                 "Noticias {item} {modifier}",
                 "¿Vale la pena {item}?",
                 "Fecha salida {item} {modifier}",
-                "Ver trailer {item} {modifier}"
+                "Ver trailer {item} {modifier}",
+                "Mejores trucos para {item}"
             ]
         },
-        // --- NUEVA SECCIÓN: FITNESS ---
+        // --- FITNESS (Expandido) ---
         fitness_gym: {
-            items: ["Creatina monohidratada", "Proteína Whey", "Rutina Full Body", "Calistenia", "Ayuno intermitente", "Zapatillas running", "Reloj Garmin", "Mancuernas ajustables"],
-            modifiers: ["beneficios y contraindicaciones", "para principiantes", "en casa sin equipo", "mejores marcas 2025", "cómo tomar correctamente", "para ganar masa muscular", "para perder grasa"],
+            items: ["Creatina monohidratada", "Proteína Whey", "Rutina Full Body", "Calistenia", "Ayuno intermitente", "Zapatillas running", "Reloj Garmin", "Mancuernas ajustables", "Yoga para principiantes", "Dieta Keto", "Magnesio y Zinc", "Crossfit"],
+            modifiers: ["beneficios y contraindicaciones", "para principiantes", "en casa sin equipo", "mejores marcas 2025", "cómo tomar correctamente", "para ganar masa muscular", "para perder grasa", "antes y después"],
             templates: [
                 "Mejor {item} {modifier}",
                 "Guía de {item} {modifier}",
                 "Errores al hacer {item}",
-                "Rutina de {item} pdf"
+                "Rutina de {item} pdf",
+                "Qué es {item} y para qué sirve"
             ]
         },
-        // --- NUEVA SECCIÓN: STEAM & OFERTAS ---
+        // --- STEAM & PC (Expandido) ---
         steam_pc: {
-            items: ["Steam Deck OLED", "Steam Summer Sale", "Counter Strike 2", "Baldur's Gate 3", "Juegos Indie", "Tarjetas gráficas NVIDIA", "SteamDB"],
-            modifiers: ["ofertas históricas", "juegos por menos de 5 dolares", "requisitos mínimos pc", "mejores mods", "skins baratas", "reembolso política", "fps boost guia"],
+            items: ["Steam Deck OLED", "Steam Summer Sale", "Counter Strike 2", "Baldur's Gate 3", "Juegos Indie", "Tarjetas gráficas NVIDIA", "SteamDB", "Teclado Mecánico", "Mouse Gamer Inalámbrico", "RTX 5090"],
+            modifiers: ["ofertas históricas", "juegos por menos de 5 dolares", "requisitos mínimos pc", "mejores mods", "skins baratas", "reembolso política", "fps boost guia", "driver update"],
             templates: [
                 "Comprar {item} {modifier}",
                 "Cuándo empieza {item}",
                 "Top valorados {item} {modifier}",
-                "{item} precio chile"
+                "{item} precio chile",
+                "Solución problema {item}"
             ]
         },
-        // --- SECCIONES ANTERIORES (Mantenidas para variedad) ---
-        cocktails: {
-            items: ["Mojito", "Pisco Sour", "Ramazzotti", "Gin Tonic", "Vino Navegado", "Michelada"],
-            modifiers: ["receta casera", "ingredientes", "preparación fácil", "con maracuyá", "medidas exactas"],
-            templates: ["Cómo preparar {item} {modifier}", "Receta de {item} {modifier}"]
+        // --- NUEVA: CINE Y SERIES ---
+        entertainment: {
+            items: ["Deadpool 3", "Stranger Things 5", "House of the Dragon", "Oppenheimer", "Dune Part 2", "Premios Oscar 2025", "Spiderman Beyond the Spiderverse", "The Boys Season 4", "Shrek 5"],
+            modifiers: ["fecha estreno chile", "reparto completo", "final explicado", "escenas post creditos", "crítica rotten tomatoes", "teorías fans", "resumen temporada anterior"],
+            templates: [
+                "Ver trailer {item} {modifier}",
+                "Cuándo sale {item}",
+                "Explicación final {item}",
+                "Actores de {item} biografía",
+                "Noticias rodaje {item}"
+            ]
         },
+        // --- NUEVA: CIENCIA Y CURIOSIDADES ---
+        science_curios: {
+            items: ["Agujero negro", "Telescopio James Webb", "Misión a Marte", "Inteligencia Artificial General", "Cambio climático", "Energía de fusión", "Triángulo de las Bermudas", "Pirámides de Egipto", "Civilización Maya"],
+            modifiers: ["últimos descubrimientos", "documental nacional geographic", "explicación sencilla", "fotos alta resolución", "teorías conspirativas", "historia resumida", "artículo científico"],
+            templates: [
+                "Qué es {item} {modifier}",
+                "Misterios de {item}",
+                "Avances en {item} hoy",
+                "Historia real de {item}",
+                "Datos curiosos sobre {item}"
+            ]
+        },
+        // --- NUEVA: DEPORTES Y EVENTOS ---
+        sports: {
+            items: ["Champions League", "Copa América", "Mundial 2026", "Fórmula 1", "NBA Playoffs", "Tenis ATP Ranking", "Colo Colo", "U de Chile", "Selección Chilena"],
+            modifiers: ["tabla de posiciones", "calendario partidos", "mejores goles", "fichajes rumores", "entradas precio", "resumen partido ayer", "lesiones jugadores"],
+            templates: [
+                "Resultados {item} {modifier}",
+                "Próximo partido {item}",
+                "Ver en vivo {item} {modifier}",
+                "Noticias última hora {item}"
+            ]
+        },
+        // --- TECH DEV (Expandido) ---
         tech_dev: {
-            items: ["Python", "React Native", "Docker", "Linux", "Git", "SQL"],
-            modifiers: ["tutorial pdf", "curso gratis", "documentación", "entrevista preguntas", "roadmap 2025"],
-            templates: ["Aprender {item} {modifier}", "Solucionar error {item}"]
+            items: ["Python", "React Native", "Docker", "Linux", "Git", "SQL", "Rust", "Go Lang", "AWS Services", "Cybersecurity", "Arduino", "Raspberry Pi 5"],
+            modifiers: ["tutorial pdf", "curso gratis", "documentación", "entrevista preguntas", "roadmap 2025", "proyectos para principiantes", "vs code extensiones", "certificación precio"],
+            templates: [
+                "Aprender {item} {modifier}",
+                "Solucionar error {item}",
+                "Mejores libros {item}",
+                "Instalar {item} paso a paso"
+            ]
         },
+        // --- FINANZAS (Expandido) ---
         finance: {
-            items: ["Bitcoin", "Dolar observado", "UF hoy", "Acciones Tesla", "Ethereum"],
-            modifiers: ["precio hoy", "predicción", "noticias", "gráfico tiempo real"],
-            templates: ["{item} {modifier}", "Valor {item} a pesos"]
+            items: ["Bitcoin", "Dolar observado", "UF hoy", "Acciones Tesla", "Ethereum", "Bono Marzo", "Devolución de impuestos", "Depósitos a plazo", "Dogecoin"],
+            modifiers: ["precio hoy", "predicción expertos", "noticias mercado", "gráfico tiempo real", "calculadora pesos", "invertir o vender"],
+            templates: [
+                "{item} {modifier}",
+                "Valor {item} a pesos",
+                "¿Conviene invertir en {item}?",
+                "Histórico precio {item}"
+            ]
+        },
+        // --- LIFESTYLE (Expandido) ---
+        lifestyle: {
+            items: ["Mojito", "Pisco Sour", "Sushi casero", "Pan de masa madre", "Meditación guiada", "Huerto urbano", "Decoración minimalista", "Libros best sellers"],
+            modifiers: ["receta fácil", "paso a paso", "ingredientes", "beneficios salud", "tutorial youtube", "ideas Pinterest"],
+            templates: [
+                "Cómo hacer {item} {modifier}",
+                "Mejores ideas {item}",
+                "Guía de {item} para principiantes"
+            ]
         }
     };
 
