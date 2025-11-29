@@ -185,7 +185,7 @@
         if (currentCount === 0) {
             Memory.cleanOldEntries();
             // Abrimos la ventana UNA VEZ. Pequeña y en la esquina inferior.
-            win = window.open("about:blank", "BingBotWindow", "width=100,height=100,left=0,top=10000");
+            win = window.open("about:blank", "Shadow", "width=1024,height=768,left=0,top=10000");
             
             // Intentamos devolverte el foco inmediatamente a tu pestaña principal
             setTimeout(() => { try { window.focus(); } catch(e){} }, 500);
@@ -202,7 +202,7 @@
         // 3. Chequeo de seguridad: Si cerraste la ventana por error, la reabre
         if (!win || win.closed) {
             console.warn("⚠️ Ventana cerrada manualmente. Reabriendo para continuar...");
-            win = window.open("about:blank", "BingBotWindow", "width=100,height=100,left=0,top=10000");
+            win = window.open("about:blank", "Shadow", "width=1024,height=768,left=0,top=10000");
         }
 
         // 4. Ejecución del ciclo
