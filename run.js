@@ -176,38 +176,52 @@
         }
     };
 
-    // --- EJECUCIÓN ---
+    // --- EJECUCIÓN (MODO VENTANA PERSISTENTE) ---
     let currentCount = 0;
+    let win = null; // Mantenemos la referencia a la ventana única
 
     function performSearch() {
-        if (currentCount === 0) Memory.cleanOldEntries();
+        // 1. Configuración inicial (Solo en la primera vuelta)
+        if (currentCount === 0) {
+            Memory.cleanOldEntries();
+            // Abrimos la ventana UNA VEZ. Pequeña y en la esquina inferior.
+            win = window.open("about:blank", "BingBotWindow", "width=100,height=100,left=0,top=10000");
+            
+            // Intentamos devolverte el foco inmediatamente a tu pestaña principal
+            setTimeout(() => { try { window.focus(); } catch(e){} }, 500);
+        }
 
+        // 2. Verificación de finalización
         if (currentCount >= CONFIG.totalSearches) {
             console.log("✅ Misión cumplida: 33 búsquedas realizadas.");
+            if (win) win.close(); // Cerramos la ventana solo al final
             alert("Script finalizado. Puntos obtenidos.");
             return;
         }
 
+        // 3. Chequeo de seguridad: Si cerraste la ventana por error, la reabre
+        if (!win || win.closed) {
+            console.warn("⚠️ Ventana cerrada manualmente. Reabriendo para continuar...");
+            win = window.open("about:blank", "BingBotWindow", "width=100,height=100,left=0,top=10000");
+        }
+
+        // 4. Ejecución del ciclo
         currentCount++;
         const searchTerm = Generator.getUniqueQuery();
         Memory.add(searchTerm);
 
-        console.log(`[${currentCount}/${CONFIG.totalSearches}] Buscando: "${searchTerm}"`);
+        console.log(`[${currentCount}/${CONFIG.totalSearches}] Navegando: "${searchTerm}"`);
 
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}&form=QBLH`;
-        const win = window.open(searchUrl, "_blank");
 
-        // Tiempo aleatorio entre 6 y 10 segundos para máxima seguridad
+        // TRUCO: Cambiamos la URL de la ventana existente en lugar de abrir una nueva.
+        // Esto NO roba el foco de tu pantalla.
+        win.location.href = searchUrl;
+
+        // Calculamos tiempo para la siguiente (entre 6 y 10 seg)
         const randomDuration = CONFIG.duration + Math.floor(Math.random() * 4000);
 
-        setTimeout(() => {
-            if (win) {
-                win.close();
-                setTimeout(performSearch, 1000);
-            } else {
-                console.error("❌ Error: Habilita las ventanas emergentes (Pop-ups).");
-            }
-        }, randomDuration);
+        setTimeout(performSearch, randomDuration);
     }
 
     performSearch();
