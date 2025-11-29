@@ -185,6 +185,8 @@
         if (currentCount === 0) {
             Memory.cleanOldEntries();
             // Abrimos la ventana UNA VEZ. Pequeña y en la esquina inferior.
+            //Móvil: width=375, height=812 (Vertical, estrecho)
+            //Escritorio: width=1024, height=768 (Horizontal, ancho)     
             win = window.open("about:blank", "Shadow", "width=1024,height=768,left=0,top=10000");
             
             // Intentamos devolverte el foco inmediatamente a tu pestaña principal
@@ -202,6 +204,8 @@
         // 3. Chequeo de seguridad: Si cerraste la ventana por error, la reabre
         if (!win || win.closed) {
             console.warn("⚠️ Ventana cerrada manualmente. Reabriendo para continuar...");
+            //Móvil: width=375, height=812 (Vertical, estrecho)
+            //Escritorio: width=1024, height=768 (Horizontal, ancho)
             win = window.open("about:blank", "Shadow", "width=1024,height=768,left=0,top=10000");
         }
 
